@@ -14,10 +14,14 @@ public interface ApplicationMapper {
     ApplicationDto map(Application application);
     List<ApplicationDto> map(List<Application> applications);
     Application map(CreateApplicationDto createApplicationDto);
-   // Employer map(EditEmployerDto editEmployerDto);
 
     @AfterMapping
     default void setFullName(@MappingTarget ApplicationJobSeekerDto applicationJobSeekerDto, JobSeeker jobSeeker) {
         applicationJobSeekerDto.setFullName(jobSeeker.getFirstName() + " " + jobSeeker.getLastName());
+    }
+
+    @AfterMapping
+    default void setApplicationDate(@MappingTarget ApplicationDto applicationDto, Application application) {
+        applicationDto.setApplicationDate(application.getCreatedDate());
     }
 }

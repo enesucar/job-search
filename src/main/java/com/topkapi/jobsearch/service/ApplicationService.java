@@ -4,15 +4,14 @@ import com.topkapi.jobsearch.dto.ApplicationDto;
 import com.topkapi.jobsearch.dto.CreateApplicationDto;
 import com.topkapi.jobsearch.dto.CreateEmployerDto;
 import com.topkapi.jobsearch.dto.EmployerDto;
-import com.topkapi.jobsearch.exception.ApplicationAlreadyExistsException;
-import com.topkapi.jobsearch.exception.EmailAlreadyExistsException;
-import com.topkapi.jobsearch.exception.EntityNotFoundException;
+import com.topkapi.jobsearch.exception.*;
 import com.topkapi.jobsearch.mapper.ApplicationMapper;
 import com.topkapi.jobsearch.model.Application;
 import com.topkapi.jobsearch.model.Employer;
 import com.topkapi.jobsearch.model.Job;
 import com.topkapi.jobsearch.model.JobSeeker;
 import com.topkapi.jobsearch.repository.ApplicationRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -57,10 +56,19 @@ public class ApplicationService {
                     createApplicationDto.getJobSeekerId() + " and Job Seeker id: " + createApplicationDto.getJobSeekerId());
         }
 
-        Application application = this.applicationMapper.map(createApplicationDto);
         JobSeeker jobSeeker = this.jobSeekerService.findById(createApplicationDto.getJobSeekerId());
         Job job = this.jobService.findById(createApplicationDto.getJobId());
 
+
+        if (this.checkIfApplicationAdmissionHasStarted(job.getStartDate())) {
+            throw new JobApplicationAdmissionHasNotStartedException("Job application admission hasn't started.");
+        }
+
+        if (this.checkIfApplicationDeadlineHasPassed(job.getEndDate())) {
+            throw new JobApplicationDeadlineHasPassedException("Job application deadline has passed.");
+        }
+
+        Application application = this.applicationMapper.map(createApplicationDto);
         application.setJobSeeker(jobSeeker);
         application.setJob(job);
         application.setCreatedDate(LocalDateTime.now());
@@ -75,7 +83,20 @@ public class ApplicationService {
     }
 
     private boolean checkIfApplicationExistsByJobIdAndJobSeekerId(String jobId, String jobSeekerId) {
-        System.out.println(this.applicationRepository.existsByJobIdAndJobSeekerId(jobId, jobSeekerId));
         return this.applicationRepository.existsByJobIdAndJobSeekerId(jobId, jobSeekerId);
+    }
+
+    private boolean checkIfApplicationAdmissionHasStarted(LocalDateTime startDate) {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("Start Date: " + now.isBefore(startDate));
+        System.out.println("Start Date: " + startDate);
+        return now.isBefore(startDate);
+    }
+
+    private boolean checkIfApplicationDeadlineHasPassed(LocalDateTime endDate) {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("End Date: " + now.isAfter(endDate));
+        System.out.println("End Date: " + endDate);
+        return now.isAfter(endDate);
     }
 }
