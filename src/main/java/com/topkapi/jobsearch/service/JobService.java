@@ -5,6 +5,8 @@ import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.mapper.JobMapper;
 import com.topkapi.jobsearch.model.*;
 import com.topkapi.jobsearch.repository.JobRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,7 +36,8 @@ public class JobService {
         this.employerService = employerService;
     }
 
-     public List<JobDto> getList() {
+    @Cacheable(value = "jobDtos")
+    public List<JobDto> getList() {
         List<Job> jobs = this.jobRepository.findAll();
         return jobMapper.map(jobs);
      }
@@ -44,6 +47,7 @@ public class JobService {
         return jobMapper.map(jobs);
     }
 
+    @Cacheable(cacheNames = "job")
     public JobDto getById(String id) {
         Job job = findById(id);
         return jobMapper.map(job);
@@ -55,6 +59,7 @@ public class JobService {
         return job;
     }
 
+    @CacheEvict(cacheNames = { "job" , "jobDtos" }, allEntries = true)
     public JobDto create(CreateJobDto createJobDto) {
         Job job = this.jobMapper.map(createJobDto);
         job.setCreatedDate(LocalDateTime.now());
@@ -74,6 +79,7 @@ public class JobService {
         return this.jobMapper.map(createdJob);
     }
 
+    @CacheEvict(cacheNames = { "job" , "jobDtos" }, allEntries = true)
     public JobDto edit(EditJobDto editJobDto) {
         Job job = this.findById(editJobDto.getId());
         Job editToJob = jobMapper.map(editJobDto);
@@ -96,6 +102,7 @@ public class JobService {
         return this.jobMapper.map(editedJob);
     }
 
+    @CacheEvict(cacheNames = { "job" , "jobDtos" }, allEntries = true)
     public void delete(String id) {
         Job deleteToJob = this.findById(id);
         this.jobRepository.delete(deleteToJob);
