@@ -2,6 +2,7 @@ package com.topkapi.jobsearch.dto;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +36,9 @@ public class EditJobDto {
     @NotBlank(message = "City is required.")
     private String cityId;
 
-    @NotBlank(message = "StartDate is required.")
+    @NotNull(message = "StartDate is required.")
     private LocalDateTime startDate;
 
-    @NotBlank(message = "EndDate is required.")
+    @NotNull(message = "EndDate is required.")
     private LocalDateTime endDate;
 }
