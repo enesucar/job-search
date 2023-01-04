@@ -27,6 +27,9 @@ public class Job {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "startDate")
     private LocalDateTime startDate;
 
@@ -34,10 +37,10 @@ public class Job {
     private LocalDateTime endDate;
 
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private String updatedDate;
+    private LocalDateTime updatedDate;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
