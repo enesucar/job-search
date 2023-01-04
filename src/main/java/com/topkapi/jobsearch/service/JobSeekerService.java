@@ -33,16 +33,13 @@ public class JobSeekerService {
     @Cacheable(cacheNames = "jobSeekersDto")
     public List<JobSeekerDto> getList() {
         List<JobSeeker> jobSeekers = this.jobSeekerRepository.findAll();
-
-        List<JobSeekerDto> jobSeekersDto = jobSeekerMapper.map(jobSeekers);
-        return jobSeekersDto;
+        return jobSeekerMapper.map(jobSeekers);
     }
 
     @Cacheable(cacheNames = "jobSeekerDto", key = "'jobSeeker#' + #id")
     public JobSeekerDto getById(String id) {
         JobSeeker jobSeeker = findById(id);
-        JobSeekerDto jobSeekerDto = jobSeekerMapper.map(jobSeeker);
-        return jobSeekerDto;
+        return jobSeekerMapper.map(jobSeeker);
     }
 
      protected JobSeeker findById(String id) {
@@ -91,11 +88,11 @@ public class JobSeekerService {
         this.jobSeekerRepository.delete(deleteToJobSeeker);
     }
 
-    private boolean checkIfEmailExistsForEdit(String email, String editToEmail) {
-        return !email.equals(editToEmail) && this.jobSeekerRepository.existsByEmail(email);
-    }
-
     private boolean checkIfEmailExistsForCreate(String email) {
         return this.jobSeekerRepository.existsByEmail(email);
+    }
+
+    private boolean checkIfEmailExistsForEdit(String email, String editToEmail) {
+        return !email.equals(editToEmail) && this.jobSeekerRepository.existsByEmail(editToEmail);
     }
 }
