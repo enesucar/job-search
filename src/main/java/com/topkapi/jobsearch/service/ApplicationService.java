@@ -2,16 +2,12 @@ package com.topkapi.jobsearch.service;
 
 import com.topkapi.jobsearch.dto.ApplicationDto;
 import com.topkapi.jobsearch.dto.CreateApplicationDto;
-import com.topkapi.jobsearch.dto.CreateEmployerDto;
-import com.topkapi.jobsearch.dto.EmployerDto;
 import com.topkapi.jobsearch.exception.*;
 import com.topkapi.jobsearch.mapper.ApplicationMapper;
 import com.topkapi.jobsearch.model.Application;
-import com.topkapi.jobsearch.model.Employer;
 import com.topkapi.jobsearch.model.Job;
 import com.topkapi.jobsearch.model.JobSeeker;
 import com.topkapi.jobsearch.repository.ApplicationRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
