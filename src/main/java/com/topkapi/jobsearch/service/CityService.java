@@ -3,6 +3,7 @@ package com.topkapi.jobsearch.service;
 import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.model.City;
 import com.topkapi.jobsearch.repository.CityRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +14,7 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
+    @Cacheable(cacheNames = "city", key = "'city#' + #id")
     protected City findById(String id) {
         City city =  this.cityRepository.findById(id)
                         .orElseThrow(() -> new EntityNotFoundException("City is not found: " + id));
