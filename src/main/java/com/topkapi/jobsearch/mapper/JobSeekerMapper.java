@@ -15,8 +15,8 @@ import java.util.List;
 public interface JobSeekerMapper {
     JobSeekerDto map(JobSeeker jobSeeker);
     List<JobSeekerDto> map(List<JobSeeker> jobSeekers);
-    JobSeeker map(CreateJobSeekerDto jobSeeker);
-    JobSeeker map(EditJobSeekerDto jobSeeker);
+    JobSeeker map(CreateJobSeekerDto createJobSeekerDto);
+    JobSeeker map(EditJobSeekerDto editJobSeekerDto);
 
     @AfterMapping
     default void setFullName(@MappingTarget JobSeekerDto jobSeekerDto, JobSeeker jobSeeker) {
