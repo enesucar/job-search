@@ -39,6 +39,11 @@ public class ApplicationService {
         return applicationMapper.map(applications);
     }
 
+    public List<ApplicationDto> getListByJobSeekerId(String id) {
+        List<Application> applications = this.applicationRepository.getByJobSeeker_Id(id);
+        return applicationMapper.map(applications);
+    }
+
     public ApplicationDto getById(String id) {
         Application application = findById(id);
         return applicationMapper.map(application);

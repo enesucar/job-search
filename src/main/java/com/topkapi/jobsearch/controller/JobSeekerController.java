@@ -1,8 +1,7 @@
 package com.topkapi.jobsearch.controller;
 
-import com.topkapi.jobsearch.dto.CreateJobSeekerDto;
-import com.topkapi.jobsearch.dto.EditJobSeekerDto;
-import com.topkapi.jobsearch.dto.JobSeekerDto;
+import com.topkapi.jobsearch.dto.*;
+import com.topkapi.jobsearch.service.ApplicationService;
 import com.topkapi.jobsearch.service.JobSeekerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,12 @@ import java.util.List;
 @RequestMapping("v1/jobseekers")
 public class JobSeekerController {
     private final JobSeekerService jobSeekerService;
+    private final ApplicationService applicationService;
 
-    public JobSeekerController(JobSeekerService jobSeekerService) {
+    public JobSeekerController(JobSeekerService jobSeekerService,
+                               ApplicationService applicationService) {
         this.jobSeekerService = jobSeekerService;
+        this.applicationService = applicationService;
     }
 
     @GetMapping
@@ -29,6 +31,12 @@ public class JobSeekerController {
     public ResponseEntity<JobSeekerDto> getById(@PathVariable("id") String id) {
         JobSeekerDto jobSeekerDto = this.jobSeekerService.getById(id);
         return ResponseEntity.ok(jobSeekerDto);
+    }
+
+    @GetMapping("/{id}/applications")
+    public ResponseEntity<List<ApplicationDto>> getApplicationListByJobSeekerId(@PathVariable("id") String id) {
+        List<ApplicationDto> applicationDtos = this.applicationService.getListByJobSeekerId(id);
+        return ResponseEntity.ok(applicationDtos);
     }
 
     @PostMapping
