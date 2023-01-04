@@ -1,6 +1,10 @@
 package com.topkapi.jobsearch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.topkapi.jobsearch.common.Json.LocalDateTimeDeserializer;
+import com.topkapi.jobsearch.common.Json.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -34,12 +39,12 @@ public class JobSeeker {
 
     @Column(name = "email")
     private String email;
-
+    
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private String updatedDate;
+    private LocalDateTime updatedDate;
 
     @ManyToOne
     @JoinColumn(name = "city_id")

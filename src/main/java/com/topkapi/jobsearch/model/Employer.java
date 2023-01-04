@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,10 +34,10 @@ public class Employer {
     private String email;
 
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
-    private String updatedDate;
+    private LocalDateTime updatedDate;
 
     @OneToMany(mappedBy = "employer")
     @JsonIgnore
