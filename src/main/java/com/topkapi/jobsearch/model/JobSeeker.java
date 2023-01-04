@@ -1,10 +1,6 @@
 package com.topkapi.jobsearch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.topkapi.jobsearch.common.Json.LocalDateTimeDeserializer;
-import com.topkapi.jobsearch.common.Json.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +35,7 @@ public class JobSeeker {
 
     @Column(name = "email")
     private String email;
-    
+
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
