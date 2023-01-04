@@ -21,7 +21,15 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<?> emailAlreadyExistsExceptionHandler(EmailAlreadyExistsException exception ,
+    public ResponseEntity<?> emailAlreadyExistsExceptionHandler(EmailAlreadyExistsException exception,
+                                                                WebRequest request)  {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ApplicationAlreadyExistsException.class)
+    public ResponseEntity<?> applicationAlreadyExistsExceptionHandler(ApplicationAlreadyExistsException exception,
                                                                 WebRequest request)  {
         Map<String, String> response = new HashMap<>();
         response.put("message", exception.getMessage());
