@@ -3,6 +3,7 @@ package com.topkapi.jobsearch.controller;
 import com.topkapi.jobsearch.dto.*;
 import com.topkapi.jobsearch.model.Job;
 import com.topkapi.jobsearch.service.JobService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +31,13 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<JobDto> create(@RequestBody CreateJobDto createJobDto) {
+    public ResponseEntity<JobDto> create(@RequestBody @Valid CreateJobDto createJobDto) {
         JobDto jobDto = this.jobService.create(createJobDto);
         return ResponseEntity.ok(jobDto);
     }
 
     @PutMapping
-    public ResponseEntity<JobDto> edit(@RequestBody EditJobDto editJobDto) {
+    public ResponseEntity<JobDto> edit(@RequestBody @Valid EditJobDto editJobDto) {
         JobDto jobDto = this.jobService.edit(editJobDto);
         return ResponseEntity.ok(jobDto);
     }

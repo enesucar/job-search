@@ -2,6 +2,7 @@ package com.topkapi.jobsearch.controller;
 
 import com.topkapi.jobsearch.dto.*;
 import com.topkapi.jobsearch.service.EmployerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,13 @@ public class EmployerController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployerDto> create(@RequestBody CreateEmployerDto createEmployerDto) {
+    public ResponseEntity<EmployerDto> create(@RequestBody @Valid CreateEmployerDto createEmployerDto) {
         EmployerDto employerDto = this.employerService.create(createEmployerDto);
         return ResponseEntity.ok(employerDto);
     }
 
     @PutMapping
-    public ResponseEntity<EmployerDto> edit(@RequestBody EditEmployerDto editEmployerDto) {
+    public ResponseEntity<EmployerDto> edit(@RequestBody @Valid EditEmployerDto editEmployerDto) {
         EmployerDto employerDto = this.employerService.edit(editEmployerDto);
         return ResponseEntity.ok(employerDto);
     }

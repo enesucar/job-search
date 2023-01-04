@@ -4,6 +4,7 @@ import com.topkapi.jobsearch.dto.CreateJobSeekerDto;
 import com.topkapi.jobsearch.dto.EditJobSeekerDto;
 import com.topkapi.jobsearch.dto.JobSeekerDto;
 import com.topkapi.jobsearch.service.JobSeekerService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +32,13 @@ public class JobSeekerController {
     }
 
     @PostMapping
-    public ResponseEntity<JobSeekerDto> create(@RequestBody CreateJobSeekerDto createJobSeekerDto) {
+    public ResponseEntity<JobSeekerDto> create(@RequestBody @Valid CreateJobSeekerDto createJobSeekerDto) {
         JobSeekerDto jobSeekerDto = this.jobSeekerService.create(createJobSeekerDto);
         return ResponseEntity.ok(jobSeekerDto);
     }
 
     @PutMapping
-    public ResponseEntity<JobSeekerDto> edit(@RequestBody EditJobSeekerDto editJobSeekerDto) {
+    public ResponseEntity<JobSeekerDto> edit(@RequestBody @Valid EditJobSeekerDto editJobSeekerDto) {
         JobSeekerDto jobSeekerDto = this.jobSeekerService.edit(editJobSeekerDto);
         return ResponseEntity.ok(jobSeekerDto);
     }

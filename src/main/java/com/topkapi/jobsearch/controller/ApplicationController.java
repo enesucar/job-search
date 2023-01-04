@@ -2,6 +2,7 @@ package com.topkapi.jobsearch.controller;
 
 import com.topkapi.jobsearch.dto.*;
 import com.topkapi.jobsearch.service.ApplicationService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApplicationDto> create(@RequestBody CreateApplicationDto createApplicationDto) {
+    public ResponseEntity<ApplicationDto> create(@RequestBody @Valid CreateApplicationDto createApplicationDto) {
         ApplicationDto applicationDto = this.applicationService.create(createApplicationDto);
         return ResponseEntity.ok(applicationDto);
     }

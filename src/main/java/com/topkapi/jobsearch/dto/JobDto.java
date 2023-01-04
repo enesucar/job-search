@@ -22,4 +22,6 @@ public class JobDto {
     private String cityName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 }
