@@ -19,7 +19,7 @@ public interface JobSeekerMapper {
     JobSeeker map(EditJobSeekerDto jobSeeker);
 
     @AfterMapping
-    default void setFullName(@MappingTarget JobSeekerDto bookDTO, JobSeeker jobSeeker) {
-        bookDTO.setFullName(jobSeeker.getFirstName() + " " + jobSeeker.getLastName());
+    default void setFullName(@MappingTarget JobSeekerDto jobSeekerDto, JobSeeker jobSeeker) {
+        jobSeekerDto.setFullName(jobSeeker.getFirstName() + " " + jobSeeker.getLastName());
     }
 }

@@ -12,7 +12,7 @@ public class CityService {
     public CityService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
-    
+
     protected City findById(String id) {
         City city =  this.cityRepository.findById(id)
                         .orElseThrow(() -> new EntityNotFoundException("City is not found: " + id));
