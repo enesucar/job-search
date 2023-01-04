@@ -1,7 +1,6 @@
 package com.topkapi.jobsearch.service;
 
 import com.topkapi.jobsearch.dto.*;
-import com.topkapi.jobsearch.exception.EmailAlreadyExistsException;
 import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.mapper.JobMapper;
 import com.topkapi.jobsearch.model.*;
@@ -52,15 +51,11 @@ public class JobService {
 
     protected Job findById(String id) {
         Job job = this.jobRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job is not found: " + id));
+                    .orElseThrow(() -> new EntityNotFoundException("Job is not found: " + id));
         return job;
     }
 
     public JobDto create(CreateJobDto createJobDto) {
-//        if (checkIfEmailExistsForCreate(createJobSeekerDto.getEmail())) {
-//            throw new EmailAlreadyExistsException("Email already exists: " + createJobSeekerDto.getEmail());
-//        }
-
         Job job = this.jobMapper.map(createJobDto);
         job.setCreatedDate(LocalDateTime.now());
 
@@ -92,7 +87,7 @@ public class JobService {
         editToJob.setCategory(category);
         editToJob.setPosition(position);
         editToJob.setEmployer(employer);
-        //TODO: Set applications
+        editToJob.setApplications(job.getApplications());
 
         editToJob.setCreatedDate(job.getCreatedDate());
         editToJob.setUpdatedDate(LocalDateTime.now());
