@@ -40,6 +40,11 @@ public class JobService {
         return jobMapper.map(jobs);
      }
 
+    public List<JobDto> getListByEmployerId(String id) {
+        List<Job> jobs = this.jobRepository.getByEmployer_Id(id);
+        return jobMapper.map(jobs);
+    }
+
     public JobDto getById(String id) {
         Job job = findById(id);
         return jobMapper.map(job);

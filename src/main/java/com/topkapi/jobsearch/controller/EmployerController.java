@@ -2,6 +2,7 @@ package com.topkapi.jobsearch.controller;
 
 import com.topkapi.jobsearch.dto.*;
 import com.topkapi.jobsearch.service.EmployerService;
+import com.topkapi.jobsearch.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +13,12 @@ import java.util.List;
 @RequestMapping("v1/employers")
 public class EmployerController {
     private final EmployerService employerService;
+    private final JobService jobService;
 
-    public EmployerController(EmployerService employerService) {
+    public EmployerController(EmployerService employerService,
+                              JobService jobService) {
         this.employerService = employerService;
+        this.jobService = jobService;
     }
 
     @GetMapping
@@ -27,6 +31,12 @@ public class EmployerController {
     public ResponseEntity<EmployerDto> getById(@PathVariable("id") String id) {
         EmployerDto employerDto = this.employerService.getById(id);
         return ResponseEntity.ok(employerDto);
+    }
+
+    @GetMapping("/{id}/jobs")
+    public ResponseEntity<List<JobDto>> getJobListByEmployerId(@PathVariable("id") String id) {
+        List<JobDto> jobDtos = this.jobService.getListByEmployerId(id);
+        return ResponseEntity.ok(jobDtos);
     }
 
     @PostMapping
