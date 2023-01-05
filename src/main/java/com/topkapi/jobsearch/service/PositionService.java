@@ -5,7 +5,6 @@ import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.mapper.PositionMapper;
 import com.topkapi.jobsearch.model.Position;
 import com.topkapi.jobsearch.repository.PositionRepository;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

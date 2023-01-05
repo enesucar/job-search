@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import util.LocalDateTimeDeserializer;
-import util.LocalDateTimeSerializer;
+import com.topkapi.jobsearch.util.LocalDateTimeDeserializer;
+import com.topkapi.jobsearch.util.LocalDateTimeSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

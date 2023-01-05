@@ -66,10 +66,18 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(JobApplicationAdmissionHasNotStartedException.class)
-    public ResponseEntity<?> jobApplicationAdmissionHasNotStartedException(JobApplicationAdmissionHasNotStartedException exception,
-                                                                             WebRequest request)  {
+    public ResponseEntity<?> jobApplicationAdmissionHasNotStartedExceptionHandler(JobApplicationAdmissionHasNotStartedException exception,
+                                                                                  WebRequest request)  {
         Map<String, String> response = new HashMap<>();
         response.put("message", exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailIsInvalidException.class)
+    public ResponseEntity<?> emailIsInvalidExceptionHandler(EmailIsInvalidException exception,
+                                                            WebRequest request)  {
+        Map<String, String> response = new HashMap<>();
+        response.put("email", exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

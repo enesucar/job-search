@@ -4,11 +4,13 @@ import com.topkapi.jobsearch.dto.CreateJobSeekerDto;
 import com.topkapi.jobsearch.dto.EditJobSeekerDto;
 import com.topkapi.jobsearch.dto.JobSeekerDto;
 import com.topkapi.jobsearch.exception.EmailAlreadyExistsException;
+import com.topkapi.jobsearch.exception.EmailIsInvalidException;
 import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.mapper.JobSeekerMapper;
 import com.topkapi.jobsearch.model.City;
 import com.topkapi.jobsearch.model.JobSeeker;
 import com.topkapi.jobsearch.repository.JobSeekerRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,13 +21,16 @@ public class JobSeekerService {
     private final JobSeekerRepository jobSeekerRepository;
     private final JobSeekerMapper jobSeekerMapper;
     private final CityService cityService;
+    private final CheckEmailService checkEmailService;
 
     public JobSeekerService(JobSeekerRepository jobSeekerRepository,
                             JobSeekerMapper jobSeekerMapper,
-                            CityService cityService) {
+                            CityService cityService,
+                            @Qualifier("javaxMailCheckEmailService")CheckEmailService checkEmailService) {
         this.jobSeekerRepository = jobSeekerRepository;
         this.jobSeekerMapper = jobSeekerMapper;
         this.cityService = cityService;
+        this.checkEmailService = checkEmailService;
     }
 
     public List<JobSeekerDto> getList() {
@@ -45,6 +50,10 @@ public class JobSeekerService {
     }
 
     public JobSeekerDto create(CreateJobSeekerDto createJobSeekerDto) {
+        if (!checkEmailService.isValid(createJobSeekerDto.getEmail())) {
+            throw new EmailIsInvalidException("Email is not valid: " + createJobSeekerDto.getEmail());
+        }
+
         if (checkIfEmailExistsForCreate(createJobSeekerDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + createJobSeekerDto.getEmail());
         }
@@ -60,6 +69,10 @@ public class JobSeekerService {
     }
 
     public JobSeekerDto edit(EditJobSeekerDto editJobSeekerDto) {
+        if (!checkEmailService.isValid(editJobSeekerDto.getEmail())) {
+            throw new EmailIsInvalidException("Email is not valid: " + editJobSeekerDto.getEmail());
+        }
+
         JobSeeker jobSeeker = this.findById(editJobSeekerDto.getId());
         if (checkIfEmailExistsForEdit(jobSeeker.getEmail(), editJobSeekerDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + editJobSeekerDto.getEmail());

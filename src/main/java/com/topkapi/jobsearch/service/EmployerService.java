@@ -2,10 +2,12 @@ package com.topkapi.jobsearch.service;
 
 import com.topkapi.jobsearch.dto.*;
 import com.topkapi.jobsearch.exception.EmailAlreadyExistsException;
+import com.topkapi.jobsearch.exception.EmailIsInvalidException;
 import com.topkapi.jobsearch.exception.EntityNotFoundException;
 import com.topkapi.jobsearch.mapper.EmployerMapper;
 import com.topkapi.jobsearch.model.Employer;
 import com.topkapi.jobsearch.repository.EmployerRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,20 +17,21 @@ import java.util.List;
 public class EmployerService {
     private final EmployerRepository employerRepository;
     private final EmployerMapper employerMapper;
+    private final CheckEmailService checkEmailService;
 
     public EmployerService(EmployerRepository employerRepository,
-                           EmployerMapper employerMapper) {
+                           EmployerMapper employerMapper,
+                           @Qualifier("javaxMailCheckEmailService")CheckEmailService checkEmailService) {
         this.employerRepository = employerRepository;
         this.employerMapper = employerMapper;
+        this.checkEmailService = checkEmailService;
     }
 
-    //@Cacheable(cacheNames = "jobSeekerDtos")
     public List<EmployerDto> getList() {
         List<Employer> employers = this.employerRepository.findAll();
         return employerMapper.map(employers);
     }
 
-    //@Cacheable(cacheNames = "jobSeekerDto", key = "'jobSeeker#' + #id")
     public EmployerDto getById(String id) {
         Employer employer = findById(id);
         return employerMapper.map(employer);
@@ -40,8 +43,11 @@ public class EmployerService {
         return employer;
     }
 
-    //@CacheEvict(cacheNames = { "jobSeekerDto", "jobSeekersDto" }, allEntries = true)
     public EmployerDto create(CreateEmployerDto createEmployerDto) {
+        if (!checkEmailService.isValid(createEmployerDto.getEmail())) {
+            throw new EmailIsInvalidException("Email is not valid: " + createEmployerDto.getEmail());
+        }
+
         if (checkIfEmailExistsForCreate(createEmployerDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + createEmployerDto.getEmail());
         }
@@ -53,8 +59,11 @@ public class EmployerService {
         return this.employerMapper.map(createdEmployer);
     }
 
-    //@CacheEvict(cacheNames = { "jobSeekerDto", "jobSeekersDto" }, allEntries = true)
     public EmployerDto edit(EditEmployerDto editEmployerDto) {
+        if (!checkEmailService.isValid(editEmployerDto.getEmail())) {
+            throw new EmailIsInvalidException("Email is not valid: " + editEmployerDto.getEmail());
+        }
+
         Employer employer = this.findById(editEmployerDto.getId());
         if (checkIfEmailExistsForEdit(employer.getEmail(), editEmployerDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists: " + editEmployerDto.getEmail());
