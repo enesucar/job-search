@@ -60,7 +60,6 @@ public class ApplicationService {
         JobSeeker jobSeeker = this.jobSeekerService.findById(createApplicationDto.getJobSeekerId());
         Job job = this.jobService.findById(createApplicationDto.getJobId());
 
-
         if (this.checkIfApplicationAdmissionHasStarted(job.getStartDate())) {
             throw new JobApplicationAdmissionHasNotStartedException("Job application admission hasn't started.");
         }
@@ -73,7 +72,7 @@ public class ApplicationService {
         application.setJobSeeker(jobSeeker);
         application.setJob(job);
         application.setCreatedDate(LocalDateTime.now());
-
+        
         Application createdApplication =  this.applicationRepository.save(application);
         return this.applicationMapper.map(createdApplication);
     }
